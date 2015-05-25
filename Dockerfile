@@ -1,10 +1,12 @@
 FROM stackbrew/ubuntu:14.04
-MAINTAINER Hamoodh "hamoodh@xerago.com"
+MAINTAINER Allan Espinosa "allan.espinosa@outlook.com"
 
 RUN apt-get update && apt-get clean
-RUN wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
-RUN sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
-RUN apt-get install jenkins
+RUN apt-get install -q -y openjdk-7-jre-headless && apt-get clean
+ADD http://mirrors.jenkins-ci.org/war/1.614/jenkins.war /opt/jenkins.war
+RUN chmod 644 /opt/jenkins.war
+ENV JENKINS_HOME /jenkins
 
+ENTRYPOINT ["java", "-jar", "/opt/jenkins.war"]
 EXPOSE 8080
 CMD [""]
